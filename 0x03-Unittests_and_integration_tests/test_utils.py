@@ -3,7 +3,7 @@
 """
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 from unittest.mock import patch, Mock
 from typing import (
     Mapping,
@@ -44,11 +44,32 @@ class TestGetJson(unittest.TestCase):
         ])
     @patch('requests.get')
     def test_get_json(self, test_url, test_payload, mock_requests):
+        """ Test for get_json """
         mock_response = Mock()
         mock_response.json.return_value = test_payload
         mock_requests.return_value = mock_response
         self.assertEqual(get_json(test_url), test_payload)
 
+class TestMemoize(unittest.TestCase):
+    """ Test the memoize fn """
+    def test_memoize(self):
+        """ Test for memoize, ensure that when a_property is called twice
+            a_method is only called once
+        """
+        class TestClass:
+            """ Test class to wrap memoize """
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method') as mock:
+            test_class = TestClass()
+            test_class.a_property()
+            test_class.a_property()
+            mock.assert_called_once()
 
 if __name__ == "__main__":
     unittest.main()
