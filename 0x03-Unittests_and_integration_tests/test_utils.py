@@ -50,6 +50,7 @@ class TestGetJson(unittest.TestCase):
         mock_requests.return_value = mock_response
         self.assertEqual(get_json(test_url), test_payload)
 
+
 class TestMemoize(unittest.TestCase):
     """ Test the memoize fn """
     def test_memoize(self):
@@ -70,6 +71,7 @@ class TestMemoize(unittest.TestCase):
             test_class.a_property()
             test_class.a_property()
             mock.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
