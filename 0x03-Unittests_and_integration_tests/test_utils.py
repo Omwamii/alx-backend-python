@@ -52,6 +52,7 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    """ Test memoization fn """
     def test_memoize(self):
         """ Test for memoize, ensure that when a_property is called twice
             a_method is only called once
